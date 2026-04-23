@@ -22,7 +22,8 @@ Complete the TODOs in ```backend/model.py``` using the code you ran in the noteb
 ```uvicorn backend.app:app --reload --host 127.0.0.1 --port 8000```
 
 Then access the front end interface: 
-``` http://127.0.0.1:8000```
+
+```http://127.0.0.1:8000```
 
 ### Lecture slides from Tuesday
 https://susiesyli.com/cs178-latent-space-lecture/#0
