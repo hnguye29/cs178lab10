@@ -25,7 +25,7 @@ if torch.cuda.is_available():
 elif torch.backends.mps.is_available():
     device = 'mps'
 
-with open('downloads/ffhq.pkl', 'rb') as f:
+with open('download/ffhq.pkl', 'rb') as f:
     G = pkl.load(f)['G_ema'].to(device)
 G.eval()
 print('Generator loaded: z_dim=', G.z_dim, 'resolution=', G.img_resolution)
@@ -60,7 +60,7 @@ def _pil_to_data_url(pil_img):
 
 
 def sample_and_generate():
-    z = torch.randn([1, G.z_dim], device=device) # TODO: sample z 
+    z = torch.randn([1, G.z_dim], device=device)  # TODO: sample z
     z_id = _save_z_and_get_id(z)
     img_b64 = generate_from_z_tensor(z)
     return z_id, img_b64
@@ -115,7 +115,7 @@ def interpolate(z_id_a, z_id_b, steps=7):
     ids = []
     alphas = list(np.linspace(0.0, 1.0, steps))
     for i, a in enumerate(alphas):
-        z_new = z_new = (1 - a) * z_a + a * z_b # TODO
+        z_new = (1 - a) * z_a + a * z_b  # TODO
         new_id = _save_z_and_get_id(z_new)
         ids.append(new_id)
         img_b64 = generate_from_z_tensor(z_new)
@@ -125,7 +125,7 @@ def interpolate(z_id_a, z_id_b, steps=7):
 
 def interpolate_weight(z_id_a, z_id_b, weight=0.5):
     """
-    Interpolate a single weighted latent: final_z = weight * z_a + (1-weight) * z_b
+    Interpolate a single weighted latent: final_z = (1-weight) * z_a + weight * z_b
     Returns (new_id, image_data_url)
     """
     path_a = _z_path(z_id_a)
@@ -135,7 +135,7 @@ def interpolate_weight(z_id_a, z_id_b, weight=0.5):
     z_a = torch.load(path_a).to(device)
     z_b = torch.load(path_b).to(device)
     w = float(weight)
-    z_new = z_new = w * z_a + (1 - w) * z_b # TODO 
+    z_new = (1 - w) * z_a + w * z_b  # TODO
     new_id = _save_z_and_get_id(z_new)
     img_b64 = generate_from_z_tensor(z_new)
     return new_id, img_b64

@@ -7,61 +7,96 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <div class="app-container">
-      <h1>StyleGAN2 Latent Space Lab</h1>
+    <div class="page">
+      <header class="page-header">
+        <h1>StyleGAN2 Latent Space Lab</h1>
+      </header>
 
-      <div class="top-row">
-        <div class="card" id="cardA">
-          <div class="card-header">Image A</div>
-          <div class="card-body"><img id="imgA" src="" alt="Image A" /></div>
-          <div class="card-footer">
-            <button id="genA" title="Draw a new random latent z for Image A">Generate / Redraw A</button>
-            <button id="undoA" title="Revert to previous latent" disabled>Undo</button>
+      <section class="top-grid">
+        <article class="latent-card">
+          <div class="card-title-row">
+            <h2>Source A</h2>
+            <span class="latent-name">z_A</span>
+          </div>
+          <div class="image-wrap">
+            <img id="imgA" src="" alt="Image A" />
+          </div>
+          <div class="card-actions">
+            <button id="genA" class="primary-btn" title="Generate a new latent for image A">Generate / Redraw A</button>
+            <button id="undoA" class="secondary-btn" disabled>Undo</button>
+          </div>
+        </article>
+
+        <article class="latent-card">
+          <div class="card-title-row">
+            <h2>Source B</h2>
+            <span class="latent-name">z_B</span>
+          </div>
+          <div class="image-wrap">
+            <img id="imgB" src="" alt="Image B" />
+          </div>
+          <div class="card-actions">
+            <button id="genB" class="primary-btn" title="Generate a new latent for image B">Generate / Redraw B</button>
+            <button id="undoB" class="secondary-btn" disabled>Undo</button>
+          </div>
+        </article>
+
+        <article class="latent-card">
+          <div class="card-title-row">
+            <h2>Result</h2>
+            <span class="latent-name">z_out</span>
+          </div>
+          <div class="image-wrap">
+            <img id="imgOut" src="" alt="Result" />
+          </div>
+          <div class="card-actions">
+            <button id="useOutA" class="secondary-btn" disabled>Use as A</button>
+            <button id="useOutB" class="secondary-btn" disabled>Use as B</button>
+            <button id="clearOut" class="secondary-btn">Clear</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Interpolation</h2>
+          <div class="interp-tools">
+            <button id="playInterp" class="secondary-btn">Play interpolation</button>
+            <div class="weight-readout">w = <span id="weightVal">0.50</span></div>
           </div>
         </div>
 
-        <div class="card" id="cardB">
-          <div class="card-header">Image B</div>
-          <div class="card-body"><img id="imgB" src="" alt="Image B" /></div>
-          <div class="card-footer">
-            <button id="genB" title="Draw a new random latent z for Image B">Generate / Redraw B</button>
-            <button id="undoB" title="Revert to previous latent" disabled>Undo</button>
+        <div class="slider-row">
+          <span class="slider-end">A</span>
+          <input id="weight" type="range" min="0" max="1" step="0.01" value="0.5" />
+          <span class="slider-end">B</span>
+        </div>
+
+        <div id="interpMsg" class="msg"></div>
+        <div id="interpResults" class="thumb-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Vector Arithmetic</h2>
+          <div id="formula" class="formula">z_out = (1 - w) * z_A + w * z_B   (w = 0.50)</div>
+        </div>
+
+        <div class="bottom-row">
+          <div class="arith-buttons">
+            <button id="opAdd" class="secondary-btn icon-btn" disabled>A + B</button>
+            <button id="opSubAB" class="secondary-btn icon-btn" disabled>A - B</button>
+            <button id="opSubBA" class="secondary-btn icon-btn" disabled>B - A</button>
+          </div>
+
+          <div class="utility-buttons">
+            <button id="doInterp" class="secondary-btn">Interpolate</button>
+            <button id="randomBoth" class="dark-btn">Random</button>
           </div>
         </div>
 
-        <div class="card result-card" id="cardOut">
-          <div class="card-header">Result</div>
-          <div class="card-body"><img id="imgOut" src="" alt="Result" /></div>
-          <div class="card-footer"><button id="clearOut">Clear</button></div>
-        </div>
-      </div>
-
-      <div class="ops-card">
-        <div class="ops-grid">
-          <div class="ops-section">
-            <h3>Arithmetic</h3>
-            <div class="ops-row">
-              <button id="opAdd" disabled>A + B</button>
-              <button id="opSubAB" disabled>A - B</button>
-              <button id="opSubBA" disabled>B - A</button>
-            </div>
-            <div class="formula" id="formula">z_out = —</div>
-            <div id="msg" class="msg"></div>
-          </div>
-
-          <div class="ops-section">
-              <h3>Interpolation</h3>
-              <div class="interp-controls">
-                <label for="weight">Interpolation Weight (w)</label>
-                <input id="weight" type="range" min="0" max="1" step="0.01" value="0.5" />
-                <span id="weightVal">0.50</span>
-                <button id="doInterp" disabled>Interpolate</button>
-              </div>
-              <div id="interpMsg" class="msg"></div>
-              <div class="interp-thumbs" id="interpResults" aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
+        <div id="msg" class="msg"></div>
+      </section>
     </div>
 
     <script src="/static/app.js"></script>
